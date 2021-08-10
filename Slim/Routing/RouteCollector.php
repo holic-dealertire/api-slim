@@ -29,7 +29,7 @@ use function is_readable;
 use function is_writable;
 
 /**
- * RouteCollector is used to collect routes and route groups
+ * RouteCollector is used to collect routes and routes groups
  * as well as generate paths and URLs relative to its environment
  */
 class RouteCollector implements RouteCollectorInterface
@@ -62,7 +62,7 @@ class RouteCollector implements RouteCollectorInterface
     protected $basePath = '';
 
     /**
-     * Path to fast route cache file. Set to null to disable route caching
+     * Path to fast routes cache file. Set to null to disable routes caching
      *
      * @var string|null
      */
@@ -130,7 +130,7 @@ class RouteCollector implements RouteCollectorInterface
     }
 
     /**
-     * Get default route invocation strategy
+     * Get default routes invocation strategy
      *
      * @return InvocationStrategyInterface
      */
@@ -228,7 +228,7 @@ class RouteCollector implements RouteCollectorInterface
                 return $route;
             }
         }
-        throw new RuntimeException('Named route does not exist for name: ' . $name);
+        throw new RuntimeException('Named routes does not exist for name: ' . $name);
     }
 
     /**
@@ -237,7 +237,7 @@ class RouteCollector implements RouteCollectorInterface
     public function lookupRoute(string $identifier): RouteInterface
     {
         if (!isset($this->routes[$identifier])) {
-            throw new RuntimeException('Route not found, looks like your route cache is stale.');
+            throw new RuntimeException('Route not found, looks like your routes cache is stale.');
         }
         return $this->routes[$identifier];
     }

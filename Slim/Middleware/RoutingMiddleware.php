@@ -101,7 +101,7 @@ class RoutingMiddleware implements MiddlewareInterface
     }
 
     /**
-     * Resolves the route from the given request
+     * Resolves the routes from the given request
      *
      * @param  ServerRequestInterface $request
      * @return RoutingResults

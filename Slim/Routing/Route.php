@@ -36,7 +36,7 @@ use function is_array;
 class Route implements RouteInterface, RequestHandlerInterface
 {
     /**
-     * HTTP methods supported by this route
+     * HTTP methods supported by this routes
      *
      * @var string[]
      */
@@ -57,7 +57,7 @@ class Route implements RouteInterface, RequestHandlerInterface
     protected $name;
 
     /**
-     * Parent route groups
+     * Parent routes groups
      *
      * @var RouteGroupInterface[]
      */
@@ -124,15 +124,15 @@ class Route implements RouteInterface, RequestHandlerInterface
     protected $groupMiddlewareAppended = false;
 
     /**
-     * @param string[]                         $methods    The route HTTP methods
-     * @param string                           $pattern    The route pattern
-     * @param callable|string                  $callable   The route callable
+     * @param string[]                         $methods    The routes HTTP methods
+     * @param string                           $pattern    The routes pattern
+     * @param callable|string                  $callable   The routes callable
      * @param ResponseFactoryInterface         $responseFactory
      * @param CallableResolverInterface        $callableResolver
      * @param ContainerInterface|null          $container
      * @param InvocationStrategyInterface|null $invocationStrategy
-     * @param RouteGroup[]                     $groups     The parent route groups
-     * @param int                              $identifier The route identifier
+     * @param RouteGroup[]                     $groups     The parent routes groups
+     * @param int                              $identifier The routes identifier
      */
     public function __construct(
         array $methods,
@@ -153,7 +153,7 @@ class Route implements RouteInterface, RequestHandlerInterface
         $this->container = $container;
         $this->invocationStrategy = $invocationStrategy ?? new RequestResponse();
         $this->groups = $groups;
-        $this->identifier = 'route' . $identifier;
+        $this->identifier = 'routes' . $identifier;
         $this->middlewareDispatcher = new MiddlewareDispatcher($this, $callableResolver, $container);
     }
 

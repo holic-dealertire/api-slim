@@ -17,12 +17,12 @@ use Slim\Interfaces\InvocationStrategyInterface;
 use function array_values;
 
 /**
- * Route callback strategy with route parameters as individual arguments.
+ * Route callback strategy with routes parameters as individual arguments.
  */
 class RequestResponseArgs implements InvocationStrategyInterface
 {
     /**
-     * Invoke a route callable with request, response and all route parameters
+     * Invoke a routes callable with request, response and all routes parameters
      * as individual arguments.
      *
      * @param callable               $callable

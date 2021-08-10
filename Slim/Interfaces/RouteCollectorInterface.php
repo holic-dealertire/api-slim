@@ -16,21 +16,21 @@ use RuntimeException;
 interface RouteCollectorInterface
 {
     /**
-     * Get the route parser
+     * Get the routes parser
      *
      * @return RouteParserInterface
      */
     public function getRouteParser(): RouteParserInterface;
 
     /**
-     * Get default route invocation strategy
+     * Get default routes invocation strategy
      *
      * @return InvocationStrategyInterface
      */
     public function getDefaultInvocationStrategy(): InvocationStrategyInterface;
 
     /**
-     * Set default route invocation strategy
+     * Set default routes invocation strategy
      *
      * @param InvocationStrategyInterface $strategy
      * @return RouteCollectorInterface
@@ -71,46 +71,46 @@ interface RouteCollectorInterface
     public function setBasePath(string $basePath): RouteCollectorInterface;
 
     /**
-     * Get route objects
+     * Get routes objects
      *
      * @return RouteInterface[]
      */
     public function getRoutes(): array;
 
     /**
-     * Get named route object
+     * Get named routes object
      *
      * @param string $name Route name
      *
      * @return RouteInterface
      *
-     * @throws RuntimeException   If named route does not exist
+     * @throws RuntimeException   If named routes does not exist
      */
     public function getNamedRoute(string $name): RouteInterface;
 
     /**
-     * Remove named route
+     * Remove named routes
      *
      * @param string $name Route name
      * @return RouteCollectorInterface
      *
-     * @throws RuntimeException   If named route does not exist
+     * @throws RuntimeException   If named routes does not exist
      */
     public function removeNamedRoute(string $name): RouteCollectorInterface;
 
     /**
-     * Lookup a route via the route's unique identifier
+     * Lookup a routes via the routes's unique identifier
      *
      * @param string $identifier
      *
      * @return RouteInterface
      *
-     * @throws RuntimeException   If route of identifier does not exist
+     * @throws RuntimeException   If routes of identifier does not exist
      */
     public function lookupRoute(string $identifier): RouteInterface;
 
     /**
-     * Add route group
+     * Add routes group
      *
      * @param string          $pattern
      * @param string|callable $callable
@@ -119,11 +119,11 @@ interface RouteCollectorInterface
     public function group(string $pattern, $callable): RouteGroupInterface;
 
     /**
-     * Add route
+     * Add routes
      *
      * @param string[]        $methods Array of HTTP methods
-     * @param string          $pattern The route pattern
-     * @param callable|string $handler The route callable
+     * @param string          $pattern The routes pattern
+     * @param callable|string $handler The routes callable
      *
      * @return RouteInterface
      */

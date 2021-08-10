@@ -17,14 +17,14 @@ use Psr\Http\Server\MiddlewareInterface;
 interface RouteInterface
 {
     /**
-     * Get route invocation strategy
+     * Get routes invocation strategy
      *
      * @return InvocationStrategyInterface
      */
     public function getInvocationStrategy(): InvocationStrategyInterface;
 
     /**
-     * Set route invocation strategy
+     * Set routes invocation strategy
      *
      * @param InvocationStrategyInterface $invocationStrategy
      * @return RouteInterface
@@ -32,21 +32,21 @@ interface RouteInterface
     public function setInvocationStrategy(InvocationStrategyInterface $invocationStrategy): RouteInterface;
 
     /**
-     * Get route methods
+     * Get routes methods
      *
      * @return string[]
      */
     public function getMethods(): array;
 
     /**
-     * Get route pattern
+     * Get routes pattern
      *
      * @return string
      */
     public function getPattern(): string;
 
     /**
-     * Set route pattern
+     * Set routes pattern
      *
      * @param string $pattern
      * @return RouteInterface
@@ -54,14 +54,14 @@ interface RouteInterface
     public function setPattern(string $pattern): RouteInterface;
 
     /**
-     * Get route callable
+     * Get routes callable
      *
      * @return callable|string
      */
     public function getCallable();
 
     /**
-     * Set route callable
+     * Set routes callable
      *
      * @param callable|string $callable
      * @return RouteInterface
@@ -69,14 +69,14 @@ interface RouteInterface
     public function setCallable($callable): RouteInterface;
 
     /**
-     * Get route name
+     * Get routes name
      *
      * @return null|string
      */
     public function getName(): ?string;
 
     /**
-     * Set route name
+     * Set routes name
      *
      * @param string $name
      *
@@ -85,14 +85,14 @@ interface RouteInterface
     public function setName(string $name): RouteInterface;
 
     /**
-     * Get the route's unique identifier
+     * Get the routes's unique identifier
      *
      * @return string
      */
     public function getIdentifier(): string;
 
     /**
-     * Retrieve a specific route argument
+     * Retrieve a specific routes argument
      *
      * @param string      $name
      * @param string|null $default
@@ -102,14 +102,14 @@ interface RouteInterface
     public function getArgument(string $name, ?string $default = null): ?string;
 
     /**
-     * Get route arguments
+     * Get routes arguments
      *
      * @return string[]
      */
     public function getArguments(): array;
 
     /**
-     * Set a route argument
+     * Set a routes argument
      *
      * @param string $name
      * @param string $value
@@ -119,7 +119,7 @@ interface RouteInterface
     public function setArgument(string $name, string $value): RouteInterface;
 
     /**
-     * Replace route arguments
+     * Replace routes arguments
      *
      * @param string[] $arguments
      *
@@ -140,7 +140,7 @@ interface RouteInterface
     public function addMiddleware(MiddlewareInterface $middleware): RouteInterface;
 
     /**
-     * Prepare the route for use
+     * Prepare the routes for use
      *
      * @param string[] $arguments
      * @return RouteInterface
@@ -148,9 +148,9 @@ interface RouteInterface
     public function prepare(array $arguments): RouteInterface;
 
     /**
-     * Run route
+     * Run routes
      *
-     * This method traverses the middleware stack, including the route's callable
+     * This method traverses the middleware stack, including the routes's callable
      * and captures the resultant HTTP response object. It then sends the response
      * back to the Application.
      *

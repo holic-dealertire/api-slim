@@ -33,7 +33,7 @@ class RequestHandler implements RequestHandlerInvocationStrategyInterface
     }
 
     /**
-     * Invoke a route callable that implements RequestHandlerInterface
+     * Invoke a routes callable that implements RequestHandlerInterface
      *
      * @param callable               $callable
      * @param ServerRequestInterface $request

@@ -21,7 +21,7 @@ interface RouteGroupInterface
     public function collectRoutes(): RouteGroupInterface;
 
     /**
-     * Add middleware to the route group
+     * Add middleware to the routes group
      *
      * @param MiddlewareInterface|string|callable $middleware
      * @return RouteGroupInterface
@@ -29,7 +29,7 @@ interface RouteGroupInterface
     public function add($middleware): RouteGroupInterface;
 
     /**
-     * Add middleware to the route group
+     * Add middleware to the routes group
      *
      * @param MiddlewareInterface $middleware
      * @return RouteGroupInterface

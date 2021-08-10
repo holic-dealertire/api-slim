@@ -17,7 +17,7 @@ use RuntimeException;
 interface RouteParserInterface
 {
     /**
-     * Build the path for a named route excluding the base path
+     * Build the path for a named routes excluding the base path
      *
      * @param string   $routeName   Route name
      * @param string[] $data        Named argument replacement data
@@ -25,13 +25,13 @@ interface RouteParserInterface
      *
      * @return string
      *
-     * @throws RuntimeException         If named route does not exist
+     * @throws RuntimeException         If named routes does not exist
      * @throws InvalidArgumentException If required data not provided
      */
     public function relativeUrlFor(string $routeName, array $data = [], array $queryParams = []): string;
 
     /**
-     * Build the path for a named route including the base path
+     * Build the path for a named routes including the base path
      *
      * @param string   $routeName   Route name
      * @param string[] $data        Named argument replacement data
@@ -39,13 +39,13 @@ interface RouteParserInterface
      *
      * @return string
      *
-     * @throws RuntimeException         If named route does not exist
+     * @throws RuntimeException         If named routes does not exist
      * @throws InvalidArgumentException If required data not provided
      */
     public function urlFor(string $routeName, array $data = [], array $queryParams = []): string;
 
     /**
-     * Get fully qualified URL for named route
+     * Get fully qualified URL for named routes
      *
      * @param UriInterface $uri
      * @param string       $routeName   Route name

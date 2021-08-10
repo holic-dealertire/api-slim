@@ -53,81 +53,81 @@ interface RouteCollectorProxyInterface
     public function setBasePath(string $basePath): RouteCollectorProxyInterface;
 
     /**
-     * Add GET route
+     * Add GET routes
      *
-     * @param  string          $pattern  The route URI pattern
-     * @param  callable|string $callable The route callback routine
+     * @param  string          $pattern  The routes URI pattern
+     * @param  callable|string $callable The routes callback routine
      *
      * @return RouteInterface
      */
     public function get(string $pattern, $callable): RouteInterface;
 
     /**
-     * Add POST route
+     * Add POST routes
      *
-     * @param  string          $pattern  The route URI pattern
-     * @param  callable|string $callable The route callback routine
+     * @param  string          $pattern  The routes URI pattern
+     * @param  callable|string $callable The routes callback routine
      *
      * @return RouteInterface
      */
     public function post(string $pattern, $callable): RouteInterface;
 
     /**
-     * Add PUT route
+     * Add PUT routes
      *
-     * @param  string          $pattern  The route URI pattern
-     * @param  callable|string $callable The route callback routine
+     * @param  string          $pattern  The routes URI pattern
+     * @param  callable|string $callable The routes callback routine
      *
      * @return RouteInterface
      */
     public function put(string $pattern, $callable): RouteInterface;
 
     /**
-     * Add PATCH route
+     * Add PATCH routes
      *
-     * @param  string          $pattern  The route URI pattern
-     * @param  callable|string $callable The route callback routine
+     * @param  string          $pattern  The routes URI pattern
+     * @param  callable|string $callable The routes callback routine
      *
      * @return RouteInterface
      */
     public function patch(string $pattern, $callable): RouteInterface;
 
     /**
-     * Add DELETE route
+     * Add DELETE routes
      *
-     * @param  string          $pattern  The route URI pattern
-     * @param  callable|string $callable The route callback routine
+     * @param  string          $pattern  The routes URI pattern
+     * @param  callable|string $callable The routes callback routine
      *
      * @return RouteInterface
      */
     public function delete(string $pattern, $callable): RouteInterface;
 
     /**
-     * Add OPTIONS route
+     * Add OPTIONS routes
      *
-     * @param  string          $pattern  The route URI pattern
-     * @param  callable|string $callable The route callback routine
+     * @param  string          $pattern  The routes URI pattern
+     * @param  callable|string $callable The routes callback routine
      *
      * @return RouteInterface
      */
     public function options(string $pattern, $callable): RouteInterface;
 
     /**
-     * Add route for any HTTP method
+     * Add routes for any HTTP method
      *
-     * @param  string          $pattern  The route URI pattern
-     * @param  callable|string $callable The route callback routine
+     * @param  string          $pattern  The routes URI pattern
+     * @param  callable|string $callable The routes callback routine
      *
      * @return RouteInterface
      */
     public function any(string $pattern, $callable): RouteInterface;
 
     /**
-     * Add route with multiple methods
+     * Add routes with multiple methods
      *
      * @param  string[]        $methods  Numeric array of HTTP method names
-     * @param  string          $pattern  The route URI pattern
-     * @param  callable|string $callable The route callback routine
+     * @param  string          $pattern  The routes URI pattern
+     * @param  callable|string $callable The routes callback routine
      *
      * @return RouteInterface
      */
@@ -136,7 +136,7 @@ interface RouteCollectorProxyInterface
     /**
      * Route Groups
      *
-     * This method accepts a route pattern and a callback. All route
+     * This method accepts a routes pattern and a callback. All routes
      * declarations in the callback will be prepended by the group(s)
      * that it is in.
      *
@@ -148,7 +148,7 @@ interface RouteCollectorProxyInterface
     public function group(string $pattern, $callable): RouteGroupInterface;
 
     /**
-     * Add a route that sends an HTTP redirect
+     * Add a routes that sends an HTTP redirect
      *
      * @param string              $from
      * @param string|UriInterface $to
