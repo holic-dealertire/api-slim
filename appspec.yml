@@ -13,9 +13,9 @@ permissions:
 hooks:
   BeforeInstall:
   AfterInstall:
-    - location: scripts/install_dependencies
-      timeout: 1000
-      runas: root
+#    - location: scripts/install_dependencies
+#      timeout: 1000
+#      runas: root
     - location: scripts/start_server
       timeout: 300
       runas: root
