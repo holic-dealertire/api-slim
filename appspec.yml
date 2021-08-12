@@ -11,6 +11,7 @@ permissions:
     group: apache
 
 hooks:
+  BeforeInstall:
   AfterInstall:
     - location: scripts/install_dependencies
       timeout: 1000
