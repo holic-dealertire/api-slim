@@ -5,6 +5,8 @@
  * Date: 2021-08-11
  */
 
+echo "1";
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
