@@ -25,24 +25,32 @@ $app->get('/{name}', function (Request $request, Response $response, array $args
     return $response;
 });
 
-$_url = parse_url($_SERVER['REQUEST_URI']);
-$_routes = explode('/', $_url['path']);
-$_baseRoute = $_routes[1];
-if ($_baseRoute) {
-    switch ($_baseRoute) {
-        case 'order':
-            $_routeFile = __DIR__ . '/../routes/order.php';
-            break;
-        default:
-            $_routeFile = __DIR__ . '/../routes/tire.php';
-            break;
-    }
+$app->get('/tire/all', function (Request $request, Response $response) {
+    $sql = "select * from g5_shop_item_option";
 
-    if (file_exists($_routeFile)) {
-        require $_routeFile;
-    } else {
-        die('Invalid API request');
+    try {
+        $db = new DB();
+        $conn = $db->connect();
+        $stmt = $conn->query($sql);
+        $tire = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+
+        $response->getBody()->write(json_encode($tire));
+
+        return $response
+            ->withHeader('content-type', 'application/json;charset=utf-8')
+            ->withStatus(200);
+    } catch (PDOException $e) {
+        $error = array(
+            "message" => $e->getMessage()
+        );
+
+        $response->getBody()->write(json_encode($error));
+        return $response
+            ->withHeader('content-type', 'application/json;charset=utf-8')
+            ->withStatus(500);
     }
-}
+});
+
 $app->run();
 ?>
