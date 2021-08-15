@@ -71,7 +71,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Slim\\": "Slim"
+            "Slim\\": "Slim",
+            "" : "public/"
         }
     },
     "autoload-dev": {
