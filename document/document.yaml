@@ -1,228 +1,449 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "blackcircles-api",
-    "version": "1.0",
-    "title": "blackcircles-api"
+    "description": "이 문서는 REST API를 사용한 블랙서클 API 사용법에 대하여 안내합니다. 일부 한정된 기능을 제공하는 버전입니다.\n",
+    "version": "1.0.0",
+    "title": "Blackcircles-REST API",
+    "contact": {
+      "email": "holic@dealertire.kr"
+    }
   },
-  "host": "api.blackcircles.co.kr",
-  "schemes": [
-      "https"
-  ],
+  "tags": [ {
+    "name": "authkey",
+    "description": "모든 요청의 parameter에 포함해야 합니다"
+  },  {
+    "name": "item",
+    "description": "상품에 대한 재고와 가격 정보"
+  }, {
+    "name": "order",
+    "description": "Access to blackcircles orders"
+  } ],
   "paths": {
-    "/pets": {
+    "/item": {
       "get": {
-        "produces": [
-            "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "type",
-            "in": "query",
-            "required": false,
-            "type": "string"
+        "parameters": [ {
+          "name": "authkey",
+          "in": "path",
+          "description": "/authkey",
+          "required": true,
+          "type": "string"
+        } ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/items"
+            }
           },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "type": "string"
+          "401": {
+            "description": "Invalid API key"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Pets"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "CreatePet",
-        "consumes": [
-            "application/json"
-        ],
-        "produces": [
-            "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "NewPet",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/NewPet"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/NewPetResponse"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "options": {
-        "consumes": [
-            "application/json"
-        ],
-        "produces": [
-            "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              },
-              "Access-Control-Allow-Methods": {
-                "type": "string"
-              },
-              "Access-Control-Allow-Headers": {
-                "type": "string"
-              }
-            }
-          }
-        }
+        },
+        "tags": [ "item" ]
       }
     },
-    "/pets/{petId}": {
+    "/item/{partno}": {
       "get": {
-        "operationId": "GetPet",
-        "produces": [
-            "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "petId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "parameters": [ {
+          "name": "authkey",
+          "in": "path",
+          "description": "/authkey return value",
+          "required": true,
+          "type": "string"
+        },{
+          "name": "partno",
+          "in": "path",
+          "description": "item.partno",
+          "required": true,
+          "type": "string"
+        } ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "successful",
             "schema": {
-              "$ref": "#/definitions/Pet"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
+              "$ref": "#/definitions/item"
             }
+          },
+          "401": {
+            "description": "Invalid API key"
           }
-        }
+        },
+        "tags": [ "item" ]
+      }
+    },
+    "/order": {
+      "post": {
+        "operationId": "placeOrder",
+        "produces": [ "application/json" ],
+        "parameters": [ {
+          "in": "body",
+          "name": "body",
+          "description": "order placed for purchasing the pet",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/Order"
+          }
+        } ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          }
+        },
+        "tags": [ "order" ],
+        "summary": "주문서 생성"
+      }
+    },
+    "/order/{orderid}": {
+      "get": {
+        "summary": "Find purchase order by ID",
+        "description": "주문 조회",
+        "operationId": "getOrderById",
+        "produces": [ "application/json", "application/xml" ],
+        "parameters": [ {
+          "name": "orderid",
+          "in": "path",
+          "description": "ID of pet that needs to be fetched",
+          "required": true,
+          "type": "integer",
+          "maximum": 10,
+          "minimum": 1,
+          "format": "int64"
+        } ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        },
+        "tags": [ "order" ]
       },
-      "options": {
-        "consumes": [
-            "application/json"
-        ],
-        "produces": [
-            "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "petId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+      "delete": {
+        "summary": "주문취소",
+        "description": "For valid response try integer IDs with positive integer value.\\ \\ Negative or non-integer values will generate API errors",
+        "operationId": "deleteOrder",
+        "produces": [ "application/json", "application/xml" ],
+        "parameters": [ {
+          "name": "orderid",
+          "in": "path",
+          "description": "ID of the order that needs to be deleted",
+          "required": true,
+          "type": "integer",
+          "minimum": 1,
+          "format": "int64"
+        } ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Order not found"
           }
-        ],
+        },
+        "tags": [ "order" ]
+      },
+      "put": {
+        "summary": "주문서 수정",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "produces": [ "application/json", "application/xml" ],
+        "parameters": [ {
+          "name": "username",
+          "in": "path",
+          "description": "name that need to be updated",
+          "required": true,
+          "type": "string"
+        }, {
+          "in": "body",
+          "name": "body",
+          "description": "Updated user object",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/User"
+          }
+        } ],
+        "responses": {
+          "400": {
+            "description": "Invalid user supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "tags": [ "order" ]
+      }
+    },
+    "/authkey": {
+      "get": {
+        "summary": "key를 발급합니다. 최초 한번만 하면 됩니다.",
+        "operationId": "authkey",
+        "produces": [ "application/json" ],
+        "parameters": [ {
+          "name": "userid",
+          "in": "query",
+          "description": "The user id for login",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "password",
+          "in": "query",
+          "description": "The password for login in clear text",
+          "required": true,
+          "type": "string"
+        } ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/Empty"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              },
-              "Access-Control-Allow-Methods": {
-                "type": "string"
-              },
-              "Access-Control-Allow-Headers": {
-                "type": "string"
-              }
+              "type": "string"
             }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
           }
-        }
+        },
+        "tags": [ "authkey" ]
       }
     }
   },
   "definitions": {
-    "Pets": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Pet"
-      }
-    },
-    "Empty": {
-      "type": "object"
-    },
-    "NewPetResponse": {
+    "items": {
       "type": "object",
       "properties": {
-        "pet": {
-          "$ref": "#/definitions/Pet"
+        "item": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/item"
+          }
+        }
+      }
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "petId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "shipDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "Order Status",
+          "enum": [ "placed", "approved", "delivered" ]
+        },
+        "complete": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "Order"
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Category"
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "userStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User Status"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "Tag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Tag"
+      }
+    },
+    "Pet": {
+      "type": "object",
+      "required": [ "name", "photoUrls" ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "category": {
+          "$ref": "#/definitions/Category"
+        },
+        "name": {
+          "type": "string",
+          "example": "doggie"
+        },
+        "photoUrls": {
+          "type": "array",
+          "xml": {
+            "name": "photoUrl",
+            "wrapped": true
+          },
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "xml": {
+            "name": "tag",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/Tag"
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": "pet status in the store",
+          "enum": [ "available", "pending", "sold" ]
+        }
+      },
+      "xml": {
+        "name": "Pet"
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
         },
         "message": {
           "type": "string"
         }
       }
     },
-    "Pet": {
+    "item": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer"
+        "io_size": {
+          "type": "number"
         },
-        "type": {
+        "io_size_origin": {
           "type": "string"
         },
-        "price": {
-          "type": "number"
-        }
-      }
-    },
-    "NewPet": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "$ref": "#/definitions/PetType"
+        "io_part_no": {
+          "type": "string"
         },
-        "price": {
+        "io_pr": {
+          "type": "string"
+        },
+        "io_max_weight": {
+          "type": "string"
+        },
+        "io_speed": {
+          "type": "string"
+        },
+        "io_car": {
+          "type": "string"
+        },
+        "io_oe": {
+          "type": "string"
+        },
+        "io_car_type": {
+          "type": "string"
+        },
+        "io_tire_type": {
+          "type": "string"
+        },
+        "io_factory_price": {
           "type": "number"
+        },
+        "io_maker": {
+          "type": "string"
+        },
+        "it_name": {
+          "type": "string"
+        },
+        "it_pattern": {
+          "type": "string"
+        },
+        "it_season": {
+          "type": "string"
+        },
+        "it_performance_type": {
+          "type": "string"
         }
       }
-    },
-    "PetType": {
-      "type": "string",
-      "enum": [
-          "dog",
-          "cat",
-          "fish",
-          "bird",
-          "gecko"
-      ]
     }
-  }
+  },
+  "host": "virtserver.swaggerhub.com",
+  "basePath": "/bc20/blackcircles2021/1.0.0",
+  "schemes": [ "https" ]
 }

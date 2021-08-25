@@ -1,0 +1,261 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "이 문서는 REST API를 사용한 블랙서클 API 사용법에 대하여 안내합니다. 일부 한정된 기능을 제공하는 버전입니다.",
+    "version": "1.0",
+    "title": "blackcircles-api"
+  },
+  "host": "test.blackcircles.co.kr",
+  "schemes": [
+      "https"
+  ],
+  "paths": {
+    "/items": {
+      "get": {
+        "produces": [
+            "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "io_part_no",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/items"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "CreatePet",
+        "consumes": [
+            "application/json"
+        ],
+        "produces": [
+            "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "NewPet",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewPet"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/NewPetResponse"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+            "application/json"
+        ],
+        "produces": [
+            "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/items/{io_part_no}": {
+      "get": {
+        "operationId": "GetItems",
+        "produces": [
+            "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "io_part_no",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/item"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+            "application/json"
+        ],
+        "produces": [
+            "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "io_part_no",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/item"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/item"
+      }
+    },
+    "Empty": {
+      "type": "object"
+    },
+    "NewPetResponse": {
+      "type": "object",
+      "properties": {
+        "pet": {
+          "$ref": "#/definitions/item"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "item": {
+      "type": "object",
+      "properties": {
+        "io_size": {
+          "type": "number"
+        },
+        "io_size_origin": {
+          "type": "string"
+        },
+        "io_part_no": {
+          "type": "string"
+        },
+        "io_pr": {
+          "type": "string"
+        },
+        "io_max_weight": {
+          "type": "string"
+        },
+        "io_speed": {
+          "type": "string"
+        },
+        "io_car": {
+          "type": "string"
+        },
+        "io_oe": {
+          "type": "string"
+        },
+        "io_car_type": {
+          "type": "string"
+        },
+        "io_tire_type": {
+          "type": "string"
+        },
+        "io_factory_price": {
+          "type": "number"
+        },
+        "io_maker": {
+          "type": "string"
+        },
+        "it_name": {
+          "type": "string"
+        },
+        "it_pattern": {
+          "type": "string"
+        },
+        "it_season": {
+          "type": "string"
+        },
+        "it_performance_type": {
+          "type": "string"
+        }
+      }
+    },
+    "NewPet": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/PetType"
+        },
+        "price": {
+          "type": "number"
+        }
+      }
+    },
+    "PetType": {
+      "type": "string",
+      "enum": [
+          "dog",
+          "cat",
+          "fish",
+          "bird",
+          "gecko"
+      ]
+    }
+  }
+}
