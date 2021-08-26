@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "이 문서는 REST API를 사용한 블랙서클 API 사용법에 대하여 안내합니다. 일부 한정된 기능을 제공하는 버전입니다.\n",
+    "description": "이 문서는 REST API를 사용한 블랙서클 API 사용법에 대하여 안내합니다. 일부 한정된 기능을 제공하는 버전입니다.\n***모든 request는 formdata로 보내주시면 됩니다.",
     "version": "1.0.0",
     "title": "Blackcircles-REST API",
     "contact": {
@@ -22,8 +22,14 @@
     "/item": {
       "get": {
         "parameters": [ {
+          "name": "userid",
+          "in": "formData",
+          "description": "The user id for login",
+          "required": true,
+          "type": "string"
+        }, {
           "name": "authkey",
-          "in": "path",
+          "in": "formData",
           "description": "/authkey",
           "required": true,
           "type": "string"
@@ -42,18 +48,24 @@
         "tags": [ "item" ]
       }
     },
-    "/item/{partno}": {
+    "/item/{io_part_no}": {
       "get": {
         "parameters": [ {
+          "name": "userid",
+          "in": "formData",
+          "description": "The user id for login",
+          "required": true,
+          "type": "string"
+        },{
           "name": "authkey",
-          "in": "path",
+          "in": "formData",
           "description": "/authkey return value",
           "required": true,
           "type": "string"
         },{
-          "name": "partno",
-          "in": "path",
-          "description": "item.partno",
+          "name": "io_part_no",
+          "in": "formData",
+          "description": "item.io_part_no",
           "required": true,
           "type": "string"
         } ],
@@ -73,7 +85,7 @@
     },
     "/order": {
       "post": {
-        "operationId": "placeOrder",
+        "operationId": "order",
         "produces": [ "application/json" ],
         "parameters": [ {
           "in": "body",
@@ -98,15 +110,27 @@
         "summary": "주문 생성"
       }
     },
-    "/order/{orderid}": {
+    "/order/{od_id}": {
       "get": {
         "summary": "주문 조회",
         "description": "주문 조회",
         "operationId": "getOrderById",
         "produces": [ "application/json" ],
         "parameters": [ {
-          "name": "orderid",
-          "in": "path",
+          "name": "userid",
+          "in": "formData",
+          "description": "The user id for login",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "authkey",
+          "in": "formData",
+          "description": "/authkey",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "od_id",
+          "in": "formData",
           "description": "ID of pet that needs to be fetched",
           "required": true,
           "type": "integer"
@@ -130,21 +154,25 @@
       "delete": {
         "summary": "주문 취소",
         "description": "주문취소 요청입니다.",
-        "operationId": "orderid",
-        "produces": [ "application/json"],
+        "operationId": "od_id",
+        "produces": [ "application/json" ],
         "parameters": [ {
-          "name": "orderid",
-          "in": "path",
-          "description": "ID of the order that needs to be deleted",
+          "in": "body",
+          "name": "body",
           "required": true,
-          "type": "integer"
+          "schema": {
+            "$ref": "#/definitions/order_refund_request"
+          }
         } ],
         "responses": {
           "200": {
-            "description": "정상주문취소"
+            "description": "정상주문취소",
+            "schema": {
+              "$ref": "#/definitions/order_refund_response"
+            }
           },
           "202": {
-            "description": "내부에서 확인이 필요한 주문취소(내부 매니저가 확인 후 처리합니다)"
+            "description": "확인이 필요한 주문취소(내부 매니저가 확인 후 처리합니다)"
           },
           "400": {
             "description": "Invalid ID supplied"
@@ -157,32 +185,29 @@
       },
       "put": {
         "summary": "주문 수정",
-        "description": "배송지변경 or 주문상태변경",
-        "operationId": "orderid",
-        "produces": [ "application/json"],
+        "description": "배송지변경 or 배송상태변경",
+        "operationId": "od_id",
+        "produces": [ "application/json" ],
         "parameters": [ {
-          "name": "orderid",
-          "in": "path",
-          "required": true,
-          "type": "integer"
-        }, {
           "in": "body",
           "name": "body",
-          "description": "Updated user object",
           "required": true,
           "schema": {
-            "$ref": "#/definitions/User"
+            "$ref": "#/definitions/order_status"
           }
         } ],
         "responses": {
           "200": {
-            "description": "successful"
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/order_request"
+            }
           },
           "400": {
-            "description": "Invalid user supplied"
+            "description": "Invalid ID supplied"
           },
           "404": {
-            "description": "User not found"
+            "description": "Order not found"
           }
         },
         "tags": [ "order" ]
@@ -195,13 +220,13 @@
         "produces": [ "application/json" ],
         "parameters": [ {
           "name": "userid",
-          "in": "query",
+          "in": "formData",
           "description": "The user id for login",
           "required": true,
           "type": "string"
         }, {
           "name": "password",
-          "in": "query",
+          "in": "formData",
           "description": "The password for login in clear text",
           "required": true,
           "type": "string"
@@ -275,6 +300,18 @@
     "order": {
       "type": "object",
       "properties": {
+        "userid": {
+          "type": "string",
+          "description": "받는분 성함"
+        },
+        "authkey": {
+          "type": "string",
+          "description": "받는분 성함"
+        },
+        "od_id": {
+          "type": "integer",
+          "description": "주문번호"
+        },
         "od_name": {
           "type": "string",
           "description": "받는분 성함"
@@ -331,12 +368,6 @@
         },
         "message": {
           "type": "string"
-        },
-        "data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/order"
-          }
         }
       }
     },
@@ -412,6 +443,41 @@
         }
       }
     },
+    "order_refund_request": {
+      "type": "object",
+      "properties": {
+        "userid": {
+          "type": "string"
+        },
+        "authkey": {
+          "type": "string"
+        },
+        "od_id": {
+          "type": "integer"
+        },
+        "refund_request": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cart_refund_info"
+          }
+        }
+      }
+    },
+    "order_refund_response": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "cart_item": {
       "type": "object",
       "properties": {
@@ -422,9 +488,6 @@
           "type": "integer",
           "description": "수량"
         }
-      },
-      "xml": {
-        "name": "Order"
       }
     },
     "cart_delivery_info": {
@@ -437,53 +500,109 @@
           "type": "integer",
           "description": "수량"
         },
+        "ct_status": {
+          "type": "string",
+          "description": "주문상태"
+        },
         "delivery_company": {
           "type": "string",
           "description": "배송회사"
         },
-        "invoice": {
+        "ct_invoice": {
           "type": "string",
           "description": "송장번호"
         },
-        "invoice_time": {
+        "ct_invoice_time": {
           "type": "string",
-          "description": "format datetime"
+          "description": "배송시작일시(format datetime)"
+        },
+        "ct_complete_time": {
+          "type": "string",
+          "description": "배송완료일시(format datetime)"
+        },
+        "ct_confirm_time": {
+          "type": "string",
+          "description": "구매확정일시(format datetime)"
         }
       }
     },
-    "User": {
+    "cart_refund_info": {
       "type": "object",
       "properties": {
-        "id": {
+        "io_part_no": {
+          "type": "string"
+        },
+        "ct_qty": {
           "type": "integer",
-          "format": "int64"
+          "description": "수량"
         },
-        "username": {
-          "type": "string"
+        "ct_status": {
+          "type": "string",
+          "description": "주문상태"
         },
-        "firstName": {
-          "type": "string"
+        "refund_reason": {
+          "type": "string",
+          "description": "취소(환불) 사유"
         },
-        "lastName": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "string"
-        },
-        "userStatus": {
+        "refund_price": {
           "type": "integer",
-          "format": "int32",
-          "description": "User Status"
+          "description": "취소(환불) 금액"
+        },
+        "ct_cancel_req_time": {
+          "type": "string",
+          "description": "취소요청시간(format datetime)"
         }
-      },
-      "xml": {
-        "name": "User"
+      }
+    },
+    "order_status": {
+      "type": "object",
+      "properties": {
+        "od_id": {
+          "type": "integer",
+          "description": "주문번호"
+        },
+        "od_name": {
+          "type": "string",
+          "description": "받는분 성함"
+        },
+        "od_tel": {
+          "type": "string",
+          "description": "받는분 연락처"
+        },
+        "od_zip": {
+          "type": "string",
+          "description": "받는분 우편번호"
+        },
+        "od_addr1": {
+          "type": "string",
+          "description": "받는분 주소(도로명)"
+        },
+        "od_addr2": {
+          "type": "string",
+          "description": "받는분 주소(상세주소)"
+        },
+        "od_addr3": {
+          "type": "string",
+          "description": "받는분 주소(참고항목)"
+        },
+        "cart_status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cart_status"
+          }
+        }
+      }
+    },
+    "cart_status": {
+      "type": "object",
+      "properties": {
+        "io_part_no": {
+          "type": "string"
+        },
+        "ct_status": {
+          "type": "string",
+          "description": "주문상태"
+        }
       }
     },
     "item": {
@@ -540,7 +659,6 @@
       }
     }
   },
-  "host": "virtserver.swaggerhub.com",
-  "basePath": "/bc20/blackcircles2021/1.0.0",
+  "host": "test.blackcircles.co.kr",
   "schemes": [ "https" ]
 }
