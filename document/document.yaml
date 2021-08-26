@@ -30,7 +30,7 @@
         } ],
         "responses": {
           "200": {
-            "description": "successful",
+            "description": "successful, return the array of item",
             "schema": {
               "$ref": "#/definitions/items"
             }
@@ -59,9 +59,9 @@
         } ],
         "responses": {
           "200": {
-            "description": "successful",
+            "description": "successful, return one item",
             "schema": {
-              "$ref": "#/definitions/item"
+              "$ref": "#/definitions/items"
             }
           },
           "401": {
@@ -78,17 +78,16 @@
         "parameters": [ {
           "in": "body",
           "name": "body",
-          "description": "order placed for purchasing the pet",
           "required": true,
           "schema": {
-            "$ref": "#/definitions/Order"
+            "$ref": "#/definitions/order"
           }
         } ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "successful",
             "schema": {
-              "$ref": "#/definitions/Order"
+              "$ref": "#/definitions/order_request"
             }
           },
           "400": {
@@ -96,30 +95,27 @@
           }
         },
         "tags": [ "order" ],
-        "summary": "주문서 생성"
+        "summary": "주문 생성"
       }
     },
     "/order/{orderid}": {
       "get": {
-        "summary": "Find purchase order by ID",
+        "summary": "주문 조회",
         "description": "주문 조회",
         "operationId": "getOrderById",
-        "produces": [ "application/json", "application/xml" ],
+        "produces": [ "application/json" ],
         "parameters": [ {
           "name": "orderid",
           "in": "path",
           "description": "ID of pet that needs to be fetched",
           "required": true,
-          "type": "integer",
-          "maximum": 10,
-          "minimum": 1,
-          "format": "int64"
+          "type": "integer"
         } ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "successful",
             "schema": {
-              "$ref": "#/definitions/Order"
+              "$ref": "#/definitions/order_response"
             }
           },
           "400": {
@@ -132,20 +128,24 @@
         "tags": [ "order" ]
       },
       "delete": {
-        "summary": "주문취소",
-        "description": "For valid response try integer IDs with positive integer value.\\ \\ Negative or non-integer values will generate API errors",
-        "operationId": "deleteOrder",
-        "produces": [ "application/json", "application/xml" ],
+        "summary": "주문 취소",
+        "description": "주문취소 요청입니다.",
+        "operationId": "orderid",
+        "produces": [ "application/json"],
         "parameters": [ {
           "name": "orderid",
           "in": "path",
           "description": "ID of the order that needs to be deleted",
           "required": true,
-          "type": "integer",
-          "minimum": 1,
-          "format": "int64"
+          "type": "integer"
         } ],
         "responses": {
+          "200": {
+            "description": "정상주문취소"
+          },
+          "202": {
+            "description": "내부에서 확인이 필요한 주문취소(내부 매니저가 확인 후 처리합니다)"
+          },
           "400": {
             "description": "Invalid ID supplied"
           },
@@ -156,16 +156,15 @@
         "tags": [ "order" ]
       },
       "put": {
-        "summary": "주문서 수정",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "updateUser",
-        "produces": [ "application/json", "application/xml" ],
+        "summary": "주문 수정",
+        "description": "배송지변경 or 주문상태변경",
+        "operationId": "orderid",
+        "produces": [ "application/json"],
         "parameters": [ {
-          "name": "username",
+          "name": "orderid",
           "in": "path",
-          "description": "name that need to be updated",
           "required": true,
-          "type": "string"
+          "type": "integer"
         }, {
           "in": "body",
           "name": "body",
@@ -176,6 +175,9 @@
           }
         } ],
         "responses": {
+          "200": {
+            "description": "successful"
+          },
           "400": {
             "description": "Invalid user supplied"
           },
@@ -206,9 +208,9 @@
         } ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "successful",
             "schema": {
-              "type": "string"
+              "$ref": "#/definitions/authkey_response"
             }
           },
           "400": {
@@ -223,7 +225,17 @@
     "items": {
       "type": "object",
       "properties": {
-        "item": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/item"
@@ -231,52 +243,212 @@
         }
       }
     },
-    "Order": {
+    "authkey": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "petId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "quantity": {
+        "authkey": {
+          "type": "string"
+        }
+      }
+    },
+    "authkey_response": {
+      "type": "object",
+      "properties": {
+        "code": {
           "type": "integer",
           "format": "int32"
         },
-        "shipDate": {
-          "type": "string",
-          "format": "date-time"
+        "type": {
+          "type": "string"
         },
-        "status": {
-          "type": "string",
-          "description": "Order Status",
-          "enum": [ "placed", "approved", "delivered" ]
+        "message": {
+          "type": "string"
         },
-        "complete": {
-          "type": "boolean",
-          "default": false
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/authkey"
+          }
+        }
+      }
+    },
+    "order": {
+      "type": "object",
+      "properties": {
+        "od_name": {
+          "type": "string",
+          "description": "받는분 성함"
+        },
+        "od_tel": {
+          "type": "string",
+          "description": "받는분 연락처"
+        },
+        "od_zip": {
+          "type": "string",
+          "description": "받는분 우편번호"
+        },
+        "od_addr1": {
+          "type": "string",
+          "description": "받는분 주소(도로명)"
+        },
+        "od_addr2": {
+          "type": "string",
+          "description": "받는분 주소(상세주소)"
+        },
+        "od_addr3": {
+          "type": "string",
+          "description": "받는분 주소(참고항목)"
+        },
+        "od_memo": {
+          "type": "string",
+          "description": "메모"
+        },
+        "od_receipt_price": {
+          "type": "integer",
+          "description": "총 가격 합계"
+        },
+        "od_ip": {
+          "type": "string",
+          "description": "주문자 ip"
+        },
+        "cart_item": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cart_item"
+          }
+        }
+      }
+    },
+    "order_request": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/order"
+          }
+        }
+      }
+    },
+    "order_response": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/order_info"
+          }
+        }
+      }
+    },
+    "order_info": {
+      "type": "object",
+      "properties": {
+        "od_name": {
+          "type": "string",
+          "description": "받는분 성함"
+        },
+        "od_tel": {
+          "type": "string",
+          "description": "받는분 연락처"
+        },
+        "od_zip": {
+          "type": "string",
+          "description": "받는분 우편번호"
+        },
+        "od_addr1": {
+          "type": "string",
+          "description": "받는분 주소(도로명)"
+        },
+        "od_addr2": {
+          "type": "string",
+          "description": "받는분 주소(상세주소)"
+        },
+        "od_addr3": {
+          "type": "string",
+          "description": "받는분 주소(참고항목)"
+        },
+        "od_memo": {
+          "type": "string",
+          "description": "메모"
+        },
+        "od_receipt_price": {
+          "type": "integer",
+          "description": "총 가격 합계"
+        },
+        "od_ip": {
+          "type": "string",
+          "description": "주문자 ip"
+        },
+        "od_time": {
+          "type": "string",
+          "description": "format datetime"
+        },
+        "cart_item": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cart_delivery_info"
+          }
+        }
+      }
+    },
+    "cart_item": {
+      "type": "object",
+      "properties": {
+        "io_part_no": {
+          "type": "string"
+        },
+        "ct_qty": {
+          "type": "integer",
+          "description": "수량"
         }
       },
       "xml": {
         "name": "Order"
       }
     },
-    "Category": {
+    "cart_delivery_info": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
+        "io_part_no": {
           "type": "string"
+        },
+        "ct_qty": {
+          "type": "integer",
+          "description": "수량"
+        },
+        "delivery_company": {
+          "type": "string",
+          "description": "배송회사"
+        },
+        "invoice": {
+          "type": "string",
+          "description": "송장번호"
+        },
+        "invoice_time": {
+          "type": "string",
+          "description": "format datetime"
         }
-      },
-      "xml": {
-        "name": "Category"
       }
     },
     "User": {
@@ -312,81 +484,6 @@
       },
       "xml": {
         "name": "User"
-      }
-    },
-    "Tag": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Tag"
-      }
-    },
-    "Pet": {
-      "type": "object",
-      "required": [ "name", "photoUrls" ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "category": {
-          "$ref": "#/definitions/Category"
-        },
-        "name": {
-          "type": "string",
-          "example": "doggie"
-        },
-        "photoUrls": {
-          "type": "array",
-          "xml": {
-            "name": "photoUrl",
-            "wrapped": true
-          },
-          "items": {
-            "type": "string"
-          }
-        },
-        "tags": {
-          "type": "array",
-          "xml": {
-            "name": "tag",
-            "wrapped": true
-          },
-          "items": {
-            "$ref": "#/definitions/Tag"
-          }
-        },
-        "status": {
-          "type": "string",
-          "description": "pet status in the store",
-          "enum": [ "available", "pending", "sold" ]
-        }
-      },
-      "xml": {
-        "name": "Pet"
-      }
-    },
-    "ApiResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "type": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        }
       }
     },
     "item": {
