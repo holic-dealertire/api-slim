@@ -56,7 +56,7 @@
     "require-dev": {
         "ext-simplexml": "*",
         "adriansuter/php-autoload-override": "^1.2",
-        "guzzlehttp/psr7": "^2.0",
+        "guzzlehttp/psr7": "^2.1",
         "http-interop/http-factory-guzzle": "^1.2",
         "laminas/laminas-diactoros": "^2.6",
         "nyholm/psr7": "^1.4",
